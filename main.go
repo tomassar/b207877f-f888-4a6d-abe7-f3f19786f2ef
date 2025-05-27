@@ -19,7 +19,7 @@ type Portfolio struct {
 }
 
 // RebalanceSuggestion represents what to buy or sell to reach the target allocation.
-type RebalanceSugestion struct {
+type RebalanceSuggestion struct {
 	Ticker string
 	Action string
 	Shares float64
@@ -47,8 +47,8 @@ func (p *Portfolio) TotalValue() float64 {
 }
 
 // Rebalance calculates the buy/sell actions needed to match the target allocation.
-func (p *Portfolio) Rebalance() []RebalanceSugestion {
-	suggestions := []RebalanceSugestion{}
+func (p *Portfolio) Rebalance() []RebalanceSuggestion {
+	suggestions := []RebalanceSuggestion{}
 	totalValue := p.TotalValue()
 
 	// First, calculate current values
@@ -83,7 +83,7 @@ func (p *Portfolio) Rebalance() []RebalanceSugestion {
 			action = "sell"
 			diff = -diff
 		}
-		suggestions = append(suggestions, RebalanceSugestion{
+		suggestions = append(suggestions, RebalanceSuggestion{
 			Ticker: ticker,
 			Action: action,
 			Shares: diff / price,
@@ -106,12 +106,12 @@ func main() {
 	}
 
 	allocation := map[string]float64{
-		"APL":  0.6,
+		"AAPL": 0.6,
 		"META": 0.4,
 	}
 	portfolio := NewPortfolio([]*Stock{apple, meta}, allocation)
 	suggestions := portfolio.Rebalance()
 	for _, s := range suggestions {
-		fmt.Printf("%s %.2f sares of %s\n", s.Action, s.Shares, s.Ticker)
+		fmt.Printf("%s %.2f shares of %s\n", s.Action, s.Shares, s.Ticker)
 	}
 }
