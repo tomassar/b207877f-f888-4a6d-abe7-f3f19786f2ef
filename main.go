@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/tomassar/b207877f-f888-4a6d-abe7-f3f19786f2ef/portfolio"
 )
@@ -22,7 +23,10 @@ func main() {
 		"AAPL": 0.6,
 		"META": 0.4,
 	}
-	portfolio := portfolio.NewPortfolio([]*portfolio.Stock{apple, meta}, allocation)
+	portfolio, err := portfolio.NewPortfolio([]*portfolio.Stock{apple, meta}, allocation)
+	if err != nil {
+		log.Fatal(err)
+	}
 	suggestions := portfolio.Rebalance()
 	for _, s := range suggestions {
 		fmt.Printf("%s %.2f shares of %s\n", s.Action, s.Shares, s.Ticker)
