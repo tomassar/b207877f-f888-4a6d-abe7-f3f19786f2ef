@@ -29,8 +29,8 @@ func (p *Portfolio) Rebalance() []RebalanceSuggestion {
 		if stock, ok := p.Stocks[ticker]; ok {
 			price = stock.CurrentPrice()
 		} else {
-			// Assume user owns zero if not in current stocks
-			price = 100.0 // default price, ideally fetched externally
+			// Use price provider for stocks not currently owned
+			price = p.PriceProvider.GetPrice(ticker)
 		}
 
 		currentValue := currentValues[ticker]

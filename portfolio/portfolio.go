@@ -3,8 +3,9 @@ package portfolio
 import "fmt"
 
 type Portfolio struct {
-	Stocks     map[string]*Stock
-	Allocation map[string]float64
+	Stocks        map[string]*Stock
+	Allocation    map[string]float64
+	PriceProvider PriceProvider
 }
 
 type Stock struct {
@@ -30,8 +31,9 @@ func NewPortfolio(stocks []*Stock, allocation map[string]float64) (*Portfolio, e
 		stockMap[stock.Ticker] = stock
 	}
 	return &Portfolio{
-		Stocks:     stockMap,
-		Allocation: allocation,
+		Stocks:        stockMap,
+		Allocation:    allocation,
+		PriceProvider: DefaultPriceProvider{},
 	}, nil
 }
 
@@ -42,4 +44,9 @@ func (p *Portfolio) TotalValue() float64 {
 		total += stock.Shares * stock.CurrentPrice()
 	}
 	return total
+}
+
+// SetPriceProvider allows setting a custom price provider.
+func (p *Portfolio) SetPriceProvider(provider PriceProvider) {
+	p.PriceProvider = provider
 }
